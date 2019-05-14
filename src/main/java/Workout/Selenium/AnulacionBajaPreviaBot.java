@@ -2,15 +2,15 @@ package Workout.Selenium;
 
 import Workout.Config.SSUrls;
 import Workout.Logger.LogService;
-import Workout.ORM.Model.Alta;
+import Workout.ORM.Model.AnulacionBajaPrevia;
 import Workout.ORM.Repository.ProcessStatusRepository;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
-public class AnulacionAltaPreviaBot extends OperationManager {
-    private Alta op;
+public class AnulacionBajaPreviaBot extends OperationManager {
+    private AnulacionBajaPrevia op;
 
-    public AnulacionAltaPreviaBot(LogService logger, Alta op, String envProfile, Integer operationTimeout, String screenshootPath,
+    public AnulacionBajaPreviaBot(LogService logger, AnulacionBajaPrevia op, String envProfile, Integer operationTimeout, String screenshootPath,
                                   ProcessStatusRepository processRepository) {
         super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
         this.op = op;
@@ -44,22 +44,24 @@ public class AnulacionAltaPreviaBot extends OperationManager {
         this.getDriver().findElement(By.name("txt_SDFNUMCC")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
 
         /*
-         *  Seleccionar tipo "anulación alta".
+         * Seleccionar tipo "anulación baja".
          */
-        Select selectType = new Select(this.getDriver().findElement(By.name("cbo_ListaAltasBajas001")));
-        selectType.selectByVisibleText("Alta");
+        Select selectBaja = new Select(this.getDriver().findElement(By.id("ListaAltasBajas")));
+        selectBaja.selectByVisibleText("Baja");
 
         /*
          * Rellenar fecha real de la baja.
          * Tres campos (día, mes, año)
          */
-        this.getDriver().findElement(By.name("txt_SDFDIAB")).sendKeys(String.valueOf(this.op.getFra().getDayOfMonth()));
-        this.getDriver().findElement(By.name("txt_SDFMESB")).sendKeys(String.valueOf(this.op.getFra().getMonthValue()));
-        this.getDriver().findElement(By.name("txt_SDFAOB")).sendKeys(String.valueOf(this.op.getFra().getYear()));
+        this.getDriver().findElement(By.name("txt_SDFDIAB")).sendKeys(String.valueOf(this.op.getFrb().getDayOfMonth()));
+        this.getDriver().findElement(By.name("txt_SDFMESB")).sendKeys(String.valueOf(this.op.getFrb().getMonthValue()));
+        this.getDriver().findElement(By.name("txt_SDFAOB")).sendKeys(String.valueOf(this.op.getFrb().getYear()));
+
 
         /*
-         *  Seleccionar tipo "anulación alta".
+         * Seleccionar el tipo de acción "eliminación".
          */
+
         Select selectElimination = new Select(this.getDriver().findElement(By.id("ListaAltasBajas")));
         selectElimination.selectByVisibleText("Eliminación");
 
@@ -68,7 +70,7 @@ public class AnulacionAltaPreviaBot extends OperationManager {
          * Clickar en el botón de enviar
          * Aquí concluye la primera parte del formulario
          */
-        if (this.waitFormSubmit(By.name("btn_Sub2207101004"))) {
+        if (this.waitFormSubmit(By.name("btn_Sub2207401004"))) {
             return this.secondForm();
         }
         return false;

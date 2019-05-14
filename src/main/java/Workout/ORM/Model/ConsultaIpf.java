@@ -14,13 +14,13 @@ import javax.persistence.Table;
 @EntityListeners(AuditingEntityListener.class)
 public class ConsultaIpf extends Consulta {
     @Column(nullable = false, unique = true)
-    private long naf;
+    private String naf;
 
-    public long getNaf() {
+    public String getNaf() {
         return naf;
     }
 
-    public void setNaf(long naf) {
+    public void setNaf(String naf) {
         this.naf = naf;
     }
 }

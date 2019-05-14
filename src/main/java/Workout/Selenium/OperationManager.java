@@ -242,7 +242,7 @@ public abstract class OperationManager {
         this.removeOpFromQueue();
     }
 
-    private void removeOpFromQueue() {
+    protected void removeOpFromQueue() {
         //this.operationRepository.delete(this.op);
     }
 
@@ -277,7 +277,7 @@ public abstract class OperationManager {
         }
     }
 
-    private void updateOpStatus(String status) {
+    protected void updateOpStatus(String status) {
         this.op.setStatus(this.processRepository.findByStatus(status.toUpperCase()));
         //this.operationRepository.save(this.op);
     }
