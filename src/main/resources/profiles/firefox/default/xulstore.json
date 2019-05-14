@@ -1,0 +1,97 @@
+{
+  "chrome://browser/content/browser.xul": {
+    "main-window": {
+      "sizemode": "maximized",
+      "screenX": "50",
+      "screenY": "28",
+      "width": "915",
+      "height": "630"
+    },
+    "sidebar-box": {
+      "src": "",
+      "sidebarcommand": "",
+      "width": ""
+    },
+    "navigator-toolbox": {
+      "iconsize": "small"
+    },
+    "sidebar-title": {
+      "value": "Marcadores"
+    }
+  },
+  "chrome://pippki/content/certManager.xul": {
+    "certcol": {
+      "ordinal": "1"
+    },
+    "tokencol": {
+      "ordinal": "3"
+    },
+    "sitecol": {
+      "ordinal": "3"
+    },
+    "lifetimecol": {
+      "ordinal": "5"
+    },
+    "expiredcol": {
+      "ordinal": "7"
+    },
+    "serialnumcol": {
+      "ordinal": "5"
+    },
+    "issuedcol": {
+      "ordinal": "7"
+    },
+    "certmanagertabs": {
+      "selectedIndex": "0"
+    }
+  },
+  "chrome://browser/content/preferences/permissions.xul": {
+    "PermissionsDialog": {
+      "screenX": "152",
+      "screenY": "127",
+      "width": "719",
+      "height": "507"
+    }
+  },
+  "about:preferences#applications": {
+    "handlersView": {
+      "lastSelectedType": "application/pdf"
+    }
+  },
+  "chrome://browser/content/places/places.xul": {
+    "placesContentTags": {
+      "ordinal": "3"
+    },
+    "placesContentUrl": {
+      "ordinal": "5"
+    },
+    "placesContentDate": {
+      "ordinal": "7"
+    },
+    "placesContentVisitCount": {
+      "ordinal": "9"
+    },
+    "placesContentDescription": {
+      "ordinal": "11"
+    },
+    "placesContentDateAdded": {
+      "ordinal": "13"
+    },
+    "placesContentLastModified": {
+      "ordinal": "15"
+    },
+    "places": {
+      "screenX": "38",
+      "screenY": "66",
+      "width": "700",
+      "height": "500",
+      "sizemode": "normal"
+    }
+  },
+  "chrome://mozapps/content/downloads/unknownContentType.xul": {
+    "unknownContentType": {
+      "screenX": "326",
+      "screenY": "198"
+    }
+  }
+}

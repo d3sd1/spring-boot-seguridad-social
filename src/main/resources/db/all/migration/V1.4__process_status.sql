@@ -1,0 +1,1 @@
+INSERT INTO process_status (id,status) VALUES (1,"COMPLETED"), (2,"IN_PROCESS"), (3,"STOPPED"), (4,"AWAITING"), (5,"ERROR"), (6,"REMOVED"), (9,"ABORTED"),(10, "TIMED_OUT")
