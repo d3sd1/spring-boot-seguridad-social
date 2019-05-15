@@ -1,201 +1,142 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
-import Workout.ORM.Model.Alta;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.ConsultaAltasCcc;
+import Workout.ORM.Model.Operation;
+import com.google.gson.Gson;
+import org.openqa.selenium.By;
 
-public class ConsultaAltasCccBot extends OperationManager {
-    private Alta op;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    public ConsultaAltasCccBot(LogService logger, Alta op, String envProfile, Integer operationTimeout, String screenshootPath,
-                               ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+public class ConsultaAltasCccBot extends BaseBot {
+    private ConsultaAltasCcc op;
+
+    public ConsultaAltasCccBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (ConsultaAltasCcc) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
-
     protected void initialNavigate() {
         this.navigate(SSUrls.ALTA);
     }
 
     protected boolean firstForm() {
 
+        /*
+         * Rellenar régimen
+         * Un sólo campo de 4 dígitos INT
+         */
+        this.getDriver().findElement(By.name("txt_SDFREGCTA_ayuda")).sendKeys(this.op.getCca().getReg());
+
+        /*
+         * Rellenar cuenta de cotización
+         * Primer campo, dos dígitos INT
+         * Segundo campo, nueve dígitos INT
+         */
+        this.getDriver().findElement(By.name("txt_SDFTESCTA")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
+        this.getDriver().findElement(By.name("txt_SDFNUMCTA")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+
+        /*
+         * Clickar en el botón de enviar
+         * Aquí concluye la primera parte del formulario
+         */
+        if (this.waitFormSubmit(By.name("btn_Sub2207601004"))) {
+            return this.secondForm();
+        }
         return false;
     }
 
-    /*
-    TODO: fill this
-   <?php
+    private boolean secondForm() {
+        /*
+         * Marcar todas las opciones para que salgan mas cosas en el formulario.
+         *
+         */
+        this.getDriver().findElement(By.name("chk_SDFCONSSALDOS")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSCOLE")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSSII")).click();
+        if (this.waitFormSubmit(By.name("btn_Sub2207601004"))) {
+            return this.thirdForm();
+        }
+        return false;
+    }
 
-namespace App\Selenium;
+    private boolean thirdForm() {
+        /*
+         * Marcar todas las opciones para que salgan mas cosas en el formulario.
+         */
+        this.getDriver().findElement(By.name("chk_SDFCONSALTA")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSAC")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSPREV")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSHUELGA")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSASIMI")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSSUBCONOTRO")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSSUBCON")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSEMPRE")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSATEP")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSCONVCOL")).click();
+        this.getDriver().findElement(By.name("chk_SDFCONSFUNCI")).click();
+        if (this.waitFormSubmit(By.name("btn_Sub2207601004"))) {
+            return this.fourthForm();
+        }
+        return false;
+    }
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Facebook\WebDriver\WebDriverBy;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use App\Constants\ProdUrlConstants;
-
-/*
- * NOTA IMPORTANTE:
- * En el modo DEV los formularios
- * NO SE ENVÍAN!
- * SIEMPRE VA A SALIR EL ERROR DE AFILIADO INEXISTENTE.
- *
-
-    class ConsultaAltasCccBot extends Operation
-    {
-
-        public function doOperation()
-        {
-
-            /*
-             * Rellenar régimen
-             * Un sólo campo de 4 dígitos INT
-             *
-            $this->driver->findElement(WebDriverBy::name('txt_SDFREGCTA_ayuda'))->sendKeys($this->operation->getCca()->getReg());
-
-            /*
-             * Rellenar cuenta de cotización
-             * Primer campo, dos dígitos INT
-             * Segundo campo, nueve dígitos INT
-             *
-            $this->driver->findElement(WebDriverBy::name('txt_SDFTESCTA'))->sendKeys(substr($this->operation->getCca()->getCcc(), 0, 2));
-            $this->driver->findElement(WebDriverBy::name('txt_SDFNUMCTA'))->sendKeys(substr($this->operation->getCca()->getCcc(), 2, 9));
-
-            /*
-             * Clickar en el botón de enviar
-             * Aquí concluye la primera parte del formulario
-             *
-            $this->takeScreenShoot();
-            $this->driver->findElement(WebDriverBy::name('btn_Sub2207601004'))->click();
-
-            $this->container->get("app.dblogger")->info("Enviando primer formulario...");
-
-            /*
-             * Eserar a que se envíe el formulario.
-             *
-            $this->waitFormSubmit(WebDriverBy::name('chk_SDFCONSSALDOS'));
-
-            /*
-             * Marcar todas las opciones para que salgan mas cosas en el formulario.
-             *
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSSALDOS'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSCOLE'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSSII'))->click();
-
-
-            /*
-             * Clickar en el botón de enviar
-             * Aquí concluye la segunda parte del formulario
-             *
-            $this->takeScreenShoot();
-            $this->driver->findElement(WebDriverBy::name('btn_Sub2207601004'))->click();
-
-            $this->container->get("app.dblogger")->info("Enviando segundo formulario...");
-
-            /*
-             * Esperar a que se envíe el formulario.
-             *
-            $this->waitFormSubmit(WebDriverBy::name('chk_SDFCONSALTA'));
-
-            /*
-             * Marcar todas las opciones para que salgan mas cosas en el formulario.
-             *
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSALTA'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSAC'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSPREV'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSHUELGA'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSASIMI'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSSUBCONOTRO'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSSUBCON'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSEMPRE'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSATEP'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSCONVCOL'))->click();
-            $this->driver->findElement(WebDriverBy::name('chk_SDFCONSFUNCI'))->click();
-
-
-            /*
-             * Clickar en el botón de enviar
-             * Aquí concluye la tercera parte del formulario
-             *
-            $this->takeScreenShoot();
-            $this->driver->findElement(WebDriverBy::name('btn_Sub2207601004'))->click();
-
-            $this->container->get("app.dblogger")->info("Enviando tercer formulario...");
-
-            /*
-             * Esperar a que se envíe el formulario.
-             *
-            $this->waitFormSubmit(WebDriverBy::id('SDFNISS3'));
-
-
-            /*
-             * Revisar si hay errores en el formulario. Si los hay, detener ejecución.
-             *
-            if ($this->hasFormErrors(true, true)) {
-                return false;
-            }
-
-            /*
-             * Empezar iteraciones para recoger datos.
-             *
-
-            $workers = [];
-            $baseElname = "Sub0900113079_{{COL}}_{{ROW}}";
-            $workersRemaining = true;
-            $actualPage = 1;
-            while ($workersRemaining) {
-                for ($row = 0; $row < 13; $row++) {
-                    try {
-                        $worker = new \stdClass();
-                        $worker->NAF = $this->driver->findElement(WebDriverBy::id(str_replace(['{{ROW}}', '{{COL}}'], [$row, 1], $baseElname)))->getText();
-                        $worker->SIT = $this->driver->findElement(WebDriverBy::id(str_replace(['{{ROW}}', '{{COL}}'], [$row, 2], $baseElname)))->getText();
-                        $worker->NAP = $this->driver->findElement(WebDriverBy::id(str_replace(['{{ROW}}', '{{COL}}'], [$row, 3], $baseElname)))->getText();
-                        $worker->IFT = $this->driver->findElement(WebDriverBy::id(str_replace(['{{ROW}}', '{{COL}}'], [$row, 4], $baseElname)))->getText();
-                        array_push($workers, $worker);
-                    } catch (\Exception $e) {
-                        $this->container->get("app.dblogger")->info("Deteniendo recogida de datos. No hay más usuarios.");
-                        $workersRemaining = false;
-                        break;
-                    }
-                }
-                $this->takeScreenShoot();
-                $this->driver->findElement(WebDriverBy::name('btn_Sub2207901001'))->click();
-
-                $this->container->get("app.dblogger")->info("Cargando más registros...");
-
-                /*
-                 * Esperar a que se envíe el formulario.
-                 *
-                $this->waitFormSubmit(WebDriverBy::id('Sub0900113079'));
-                $this->container->get("app.dblogger")->info("Procesada página " . $actualPage . ", intentando avanzar...");
-                if ($this->hasFormErrors(false, true)) {
-                    $this->container->get("app.dblogger")->info("Deteniendo recogida de datos. No hay más paginación.");
-                    $workersRemaining = false;
+    private boolean fourthForm() {
+        /*
+         * Empezar iteraciones para recoger datos.
+         */
+        String baseElName = "Sub0900113079_{{COL}}_{{ROW}}";
+        boolean workersRemaining = true;
+        ArrayList<HashMap<String, String>> workers = new ArrayList<>();
+        int actualPage = 1;
+        while (workersRemaining) {
+            for (int row = 0; row < 13; row++) {
+                try {
+                    HashMap<String, String> worker = new HashMap<>();
+                    worker.put("NAF", this.getDriver().findElement(By.id(baseElName.
+                            replace("{{ROW}}", String.valueOf(row)).replace("{{COL}}", "1")
+                    )).getText());
+                    worker.put("SIT", this.getDriver().findElement(By.id(baseElName.
+                            replace("{{ROW}}", String.valueOf(row)).replace("{{COL}}", "2")
+                    )).getText());
+                    worker.put("NAP", this.getDriver().findElement(By.id(baseElName.
+                            replace("{{ROW}}", String.valueOf(row)).replace("{{COL}}", "3")
+                    )).getText());
+                    worker.put("IFT", this.getDriver().findElement(By.id(baseElName.
+                            replace("{{ROW}}", String.valueOf(row)).replace("{{COL}}", "4")
+                    )).getText());
+                    workers.add(worker);
+                } catch (Exception e) {
+                    this.logger.info("Deteniendo recogida de datos. No hay más usuarios.");
+                    workersRemaining = false;
                     break;
                 }
-                $actualPage++;
             }
+
+            this.getDriver().findElement(By.name("btn_Sub2207901001")).click();
 
             /*
-             * Guardar su trabajadores en la base de datos.
-             *
-            $dataDir = "/var/www/data";
-            $destinationFolder = $dataDir . "/" . $this->operationName;
-            if (!file_exists($destinationFolder)) {
-                mkdir($destinationFolder);
-            }
-            $fileName = $destinationFolder . "/" . $this->operation->getId() . ".db";
-            $fp = fopen($fileName, 'w');
-            fwrite($fp, json_encode($workers));
-            fclose($fp);
-
-            $this->updateConsultaData(
-                    $fileName
-            );
-
-            return true;
+             * Esperar a que se envíe el formulario.
+             */
+            this.logger.info("Cargando más registros...");
+            this.waitFormSubmit(By.name("Sub0900113079"));
+            this.logger.info("Procesada página " + actualPage + ", intentando avanzar...");
+            actualPage++;
         }
+        /*
+         * Guardar su trabajadores en la base de datos.
+         */
+
+        Gson gson = new Gson();
+        String json = gson.toJson(workers);
+        this.op.setData(json);
+        this.queueService.saveOp(this.op);
+
+        return true;
     }
-     */
 }

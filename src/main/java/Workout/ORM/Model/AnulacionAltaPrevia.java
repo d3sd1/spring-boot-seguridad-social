@@ -4,6 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Transactional
@@ -14,7 +15,10 @@ public class AnulacionAltaPrevia extends Operation {
     private ContractAccount cca;
 
     @Column(nullable = false, unique = true)
-    private long naf;
+    private String naf;
+
+    @Column(nullable = false, unique = false)
+    private LocalDateTime fra;
 
     public ContractAccount getCca() {
         return cca;
@@ -24,11 +28,19 @@ public class AnulacionAltaPrevia extends Operation {
         this.cca = cca;
     }
 
-    public long getNaf() {
+    public String getNaf() {
         return naf;
     }
 
-    public void setNaf(long naf) {
+    public void setNaf(String naf) {
         this.naf = naf;
+    }
+
+    public LocalDateTime getFra() {
+        return fra;
+    }
+
+    public void setFra(LocalDateTime fra) {
+        this.fra = fra;
     }
 }

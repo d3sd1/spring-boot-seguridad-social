@@ -1,21 +1,24 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
 import Workout.ORM.Model.ConsultaIpf;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.Operation;
 import com.google.gson.Gson;
 import org.openqa.selenium.By;
 
 import java.util.HashMap;
 
-public class ConsultaIpfBot extends OperationManager {
+public class ConsultaIpfBot extends BaseBot {
     private ConsultaIpf op;
 
-    public ConsultaIpfBot(LogService logger, ConsultaIpf op, String envProfile, Integer operationTimeout, String screenshootPath,
-                          ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+    public ConsultaIpfBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (ConsultaIpf) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
 
     protected void initialNavigate() {
@@ -68,7 +71,7 @@ public class ConsultaIpfBot extends OperationManager {
             data.put("naf", this.getDriver().findElement(By.id("SDFNOMBRE")).getText());
             String json = gson.toJson(data);
             this.op.setData(json);
-            //TODO: actualizar registro contra la db
+            this.queueService.saveOp(this.op);
         }
 
         /*

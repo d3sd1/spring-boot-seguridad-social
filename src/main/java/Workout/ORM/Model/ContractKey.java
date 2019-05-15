@@ -22,6 +22,13 @@ public class ContractKey {
     @Column(nullable = true, unique = false)
     private String description = "";
 
+    public ContractKey() {
+    }
+
+    public ContractKey(String key) {
+        this.ckey = Integer.parseInt(key);
+    }
+
     public long getCkey() {
         return ckey;
     }

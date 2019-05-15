@@ -17,6 +17,13 @@ public class ContractCoefficient {
 
     private String description = "";
 
+    public ContractCoefficient(String coefficient) {
+        this.coefficient = Integer.parseInt(coefficient);
+    }
+
+    public ContractCoefficient() {
+    }
+
     public long getCoefficient() {
         return coefficient;
     }

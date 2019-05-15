@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Transactional
@@ -14,7 +14,7 @@ public class Alta extends Operation {
     @OneToOne
     private ContractAccount cca;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String naf;
 
     @Column(nullable = false, unique = false)
@@ -24,12 +24,12 @@ public class Alta extends Operation {
     private String ipt;
 
     @Column(nullable = false, unique = false)
-    private LocalDateTime fra;
+    private LocalDate fra;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private String gco;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private String sit;
 
     @OneToOne
@@ -70,11 +70,11 @@ public class Alta extends Operation {
         this.ipt = ipt;
     }
 
-    public LocalDateTime getFra() {
+    public LocalDate getFra() {
         return fra;
     }
 
-    public void setFra(LocalDateTime fra) {
+    public void setFra(LocalDate fra) {
         this.fra = fra;
     }
 

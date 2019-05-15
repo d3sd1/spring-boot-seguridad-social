@@ -14,7 +14,7 @@ public class AnulacionAltaConsolidada extends Operation {
     private ContractAccount cca;
 
     @Column(nullable = false, unique = true)
-    private long naf;
+    private String naf;
 
     public ContractAccount getCca() {
         return cca;
@@ -24,11 +24,11 @@ public class AnulacionAltaConsolidada extends Operation {
         this.cca = cca;
     }
 
-    public long getNaf() {
+    public String getNaf() {
         return naf;
     }
 
-    public void setNaf(long naf) {
+    public void setNaf(String naf) {
         this.naf = naf;
     }
 }

@@ -23,7 +23,7 @@ public class Operation {
     private int processTime = 0;
 
     @Column(nullable = true, unique = false)
-    private String callbackUrl = "";
+    private String callback_url = "";
 
     @OneToOne()
     private ProcessStatus status;
@@ -68,12 +68,12 @@ public class Operation {
         this.processTime = processTime;
     }
 
-    public String getCallbackUrl() {
-        return callbackUrl;
+    public String getCallback_url() {
+        return callback_url;
     }
 
-    public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public void setCallback_url(String callback_url) {
+        this.callback_url = callback_url;
     }
 
     public ProcessStatus getStatus() {

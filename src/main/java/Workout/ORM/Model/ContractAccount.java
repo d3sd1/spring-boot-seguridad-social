@@ -22,6 +22,12 @@ public class ContractAccount {
     @Column(nullable = false, unique = false)
     private String reg;
 
+    public ContractAccount() {
+    }
+
+    public ContractAccount(String name) {
+        this.name = name;
+    }
     public long getId() {
         return id;
     }

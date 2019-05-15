@@ -1,6 +1,6 @@
 package Workout.Rest;
 
-import Workout.ORM.Model.Alta;
+import Workout.ORM.Model.Baja;
 import Workout.ORM.Model.Queue;
 import Workout.ORM.QueueService;
 import Workout.ORM.Repository.*;
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @RestController
-@RequestMapping("/alta")
-public class AltaRest {
+@RequestMapping("/baja")
+public class BajaRest {
 
     @Autowired
     private ContractKeyRepository contractKeyRepository;
@@ -27,7 +27,7 @@ public class AltaRest {
     private ContractAccountRepository contractAccountRepository;
 
     @Autowired
-    private AltaRepository altaRepository;
+    private BajaRepository bajaRepository;
 
     @Autowired
     private QueueRepository queueRepository;
@@ -41,36 +41,36 @@ public class AltaRest {
     @Autowired
     private QueueService queueService;
 
-    @RequestMapping(value = "/{altaId}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getAlta(@PathVariable long altaId) {
+    @RequestMapping(value = "/{bajaId}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getBaja(@PathVariable long bajaId) {
         RestResponse resp = new RestResponse();
 
-        Alta alta = this.altaRepository.findByIdOrderByDateProcessedDesc(altaId);
+        Baja baja = this.bajaRepository.findByIdOrderByDateProcessedDesc(bajaId);
 
         resp.setData("");
-        if (alta == null) {
+        if (baja == null) {
             resp.setMessage(RestResponse.Message.NOT_FOUND);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
-        resp.setMessage(alta.getStatus().getStatus());
-        resp.setData(alta.getErrMsg());
+        resp.setMessage(baja.getStatus().getStatus());
+        resp.setData(baja.getErrMsg());
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{altaId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delAlta(@PathVariable long altaId) {
+    @RequestMapping(value = "/{bajaId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> delBaja(@PathVariable long bajaId) {
         RestResponse resp = new RestResponse();
 
-        Alta alta = this.altaRepository.findByIdOrderByDateProcessedDesc(altaId);
+        Baja baja = this.bajaRepository.findByIdOrderByDateProcessedDesc(bajaId);
         boolean success = false;
-        if (alta == null) {
+        if (baja == null) {
             resp.setMessage(RestResponse.Message.NOT_FOUND);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
-        if (alta.getStatus().getStatus().equals("AWAITING") || alta.getStatus().getStatus().equals("STOPPED")) {
-            alta.setStatus(this.statusRepository.findByStatus("REMOVED"));
-            alta.setProcessTime(0);
-            this.altaRepository.delete(alta);
+        if (baja.getStatus().getStatus().equals("AWAITING") || baja.getStatus().getStatus().equals("STOPPED")) {
+            baja.setStatus(this.statusRepository.findByStatus("REMOVED"));
+            baja.setProcessTime(0);
+            this.bajaRepository.delete(baja);
             success = true;
         }
         resp.setData(success);
@@ -79,81 +79,73 @@ public class AltaRest {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Object> postAlta(@RequestBody Alta alta) {
+    public ResponseEntity<Object> postBaja(@RequestBody Baja baja) {
         RestResponse resp = new RestResponse();
-
-        /* Previous checks and preloads. No se revisa el COE ya que es para tiempo parcial. */
-        alta.setTco(this.contractKeyRepository.findByCkey(alta.getTco().getCkey()));
-        if (alta.getTco() == null) {
-            resp.setMessage(RestResponse.Message.INVALID_OBJECT);
-            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
-        }
-
-        alta.setCoe(this.contractCoeRepository.findByCoefficient(alta.getCoe().getCoefficient()));
 
         /*
          * Validar el tipo de empresa.
          */
-        alta.setCca(this.contractAccountRepository.findByName(alta.getCca().getName()));
-        if (alta.getCca() == null) {
+        baja.setCca(this.contractAccountRepository.findByName(baja.getCca().getName()));
+        if (baja.getCca() == null) {
             resp.setMessage(RestResponse.Message.CONTRACT_ACCOUNT_NOT_FOUND);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
 
-        alta.setDateInit(LocalDateTime.now());
-        alta.setProcessTime(0);
+        baja.setDateInit(LocalDateTime.now());
+        baja.setProcessTime(0);
 
-        if (alta.getIpt().equals(6)) {
-            alta.setIpf("0" + alta.getIpf());
+        if (baja.getIpt().equals(6)) {
+            baja.setIpf("0" + baja.getIpf());
         }
         /*
          * Validar situación. Si no introdujo nada, el valor por defecto es 01.
          */
-        if (alta.getSit() == null) {
-            alta.setSit("01");
+        if (baja.getSit() == null) {
+            baja.setSit("93");
         }
 
         /*
-         * El alta no puede sobrepasar 60 días posteriores a la actual.
+         * La baja no puede sobrepasar 60 días posteriores a la actual.
          * Además, la fecha no puede ser anterior a la actual.
          */
-        if (LocalDate.now().plus(60, ChronoUnit.DAYS).isBefore(alta.getFra())) {
+        if (LocalDate.now().plus(60, ChronoUnit.DAYS).isBefore(baja.getFrb())) {
             resp.setMessage(RestResponse.Message.DATE_EXPIRE_INVALID);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
-        if (alta.getFra().isBefore(LocalDate.now())) {
+        if (LocalDate.now().plus(3, ChronoUnit.DAYS).isBefore(baja.getFrb())) {
             resp.setMessage(RestResponse.Message.DATE_PASSED);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
-
-        /*
-         * Si el contrato es de tipo parcial, se requiere su coeficiente, y que éste sea válido.
-         */
-        if (alta.getTco().getTimeType().getTimeType().equals("TIEMPO_PARCIAL") && alta.getCoe() == null) {
-            resp.setMessage(RestResponse.Message.CONTRACT_PARTIAL_COE);
+        if (baja.getFrb() != null && baja.getFfv().isBefore(LocalDate.now())) {
+            resp.setMessage(RestResponse.Message.DATE_EXPIRE_INVALID);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+        if (baja.getFfv() != null && baja.getFfv().isBefore(LocalDate.now())) {
+            resp.setMessage(RestResponse.Message.DATE_EXPIRE_INVALID);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
 
-        Alta queueAlta = this.queueService.isAltaOnQueue(alta);
-        if (queueAlta != null) {
+
+        Baja queueBaja = this.queueService.isBajaOnQueue(baja);
+        if (queueBaja != null) {
             resp.setMessage(RestResponse.Message.RETRIEVED);
-            alta = queueAlta;
+            baja = queueBaja;
         } else {
-            alta.setDateProcessed(LocalDateTime.now());
-            alta.setStatus(this.statusRepository.findByStatus("AWAITING"));
-            this.altaRepository.save(alta);
+            baja.setDateProcessed(LocalDateTime.now());
+            baja.setStatus(this.statusRepository.findByStatus("AWAITING"));
+            this.bajaRepository.save(baja);
 
             Queue queue = new Queue();
             queue.setDateAdded(LocalDateTime.now());
-            queue.setProcessType(this.processTypeRepository.findByType("ALTA"));
-            queue.setRefId(alta.getId());
+            queue.setProcessType(this.processTypeRepository.findByType("BAJA"));
+            queue.setRefId(baja.getId());
             this.queueRepository.save(queue);
             resp.setMessage(RestResponse.Message.CREATED);
 
         }
 
         /* Success */
-        resp.setData(alta.getId());
+        resp.setData(baja.getId());
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

@@ -1,19 +1,25 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
-import Workout.ORM.Model.Alta;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.AnulacionAltaConsolidada;
+import Workout.ORM.Model.Operation;
 import org.openqa.selenium.By;
 
-public class AnulacionAltaConsolidadaBot extends OperationManager {
-    private Alta op;
+import java.util.HashMap;
 
-    public AnulacionAltaConsolidadaBot(LogService logger, Alta op, String envProfile, Integer operationTimeout, String screenshootPath,
-                                       ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+public class AnulacionAltaConsolidadaBot extends BaseBot {
+    private AnulacionAltaConsolidada op;
+
+    public AnulacionAltaConsolidadaBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (AnulacionAltaConsolidada) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
+
 
     protected void initialNavigate() {
         this.navigate(SSUrls.ANULACIONALTACONSOLIDADA);

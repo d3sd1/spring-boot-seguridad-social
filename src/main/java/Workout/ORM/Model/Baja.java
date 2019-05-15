@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Transactional
@@ -14,7 +14,7 @@ public class Baja extends Operation {
     @OneToOne
     private ContractAccount cca;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String naf;
 
     @Column(nullable = false, unique = false)
@@ -24,16 +24,16 @@ public class Baja extends Operation {
     private String ipt;
 
     @Column(nullable = false, unique = false)
-    private LocalDateTime frb;
+    private LocalDate frb;
 
     @Column(nullable = false, unique = false)
-    private LocalDateTime ffv;
+    private LocalDate ffv;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private int gco;
 
-    @Column(nullable = true, unique = true)
-    private int sit;
+    @Column(nullable = true, unique = false)
+    private String sit;
 
     @OneToOne
     private ContractKey tco;
@@ -81,11 +81,11 @@ public class Baja extends Operation {
         this.gco = gco;
     }
 
-    public int getSit() {
+    public String getSit() {
         return sit;
     }
 
-    public void setSit(int sit) {
+    public void setSit(String sit) {
         this.sit = sit;
     }
 
@@ -105,19 +105,19 @@ public class Baja extends Operation {
         this.coe = coe;
     }
 
-    public LocalDateTime getFrb() {
+    public LocalDate getFrb() {
         return frb;
     }
 
-    public void setFrb(LocalDateTime frb) {
+    public void setFrb(LocalDate frb) {
         this.frb = frb;
     }
 
-    public LocalDateTime getFfv() {
+    public LocalDate getFfv() {
         return ffv;
     }
 
-    public void setFfv(LocalDateTime ffv) {
+    public void setFfv(LocalDate ffv) {
         this.ffv = ffv;
     }
 }

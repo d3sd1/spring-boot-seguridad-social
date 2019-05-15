@@ -1,25 +1,31 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
 import Workout.ORM.Model.Alta;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.Operation;
 import org.openqa.selenium.By;
 
-public class AltaBot extends OperationManager {
+import java.util.HashMap;
+
+public class AltaBot extends BaseBot {
+
     private Alta op;
 
-    public AltaBot(LogService logger, Alta op, String envProfile, Integer operationTimeout, String screenshootPath,
-                   ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+    public AltaBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (Alta) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
 
-    protected void initialNavigate() {
+    public void initialNavigate() {
         this.navigate(SSUrls.ALTA);
     }
 
-    protected boolean firstForm() {
+    public boolean firstForm() {
 
         /*
          * **************************************
@@ -67,7 +73,7 @@ public class AltaBot extends OperationManager {
         return false;
     }
 
-    private boolean secondForm() {
+    public boolean secondForm() {
 
         /*
          * **************************************
@@ -114,4 +120,5 @@ public class AltaBot extends OperationManager {
          */
         return this.waitFormSubmit(By.name("btn_Sub2207401004"));
     }
+
 }

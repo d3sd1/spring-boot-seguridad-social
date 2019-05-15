@@ -1,19 +1,25 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
 import Workout.ORM.Model.CambioContratoConsolidado;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.Operation;
 import org.openqa.selenium.By;
 
-public class CambioContratoConsolidadoBot extends OperationManager {
+import java.util.HashMap;
+
+public class CambioContratoConsolidadoBot extends BaseBot {
     private CambioContratoConsolidado op;
 
-    public CambioContratoConsolidadoBot(LogService logger, CambioContratoConsolidado op, String envProfile, Integer operationTimeout, String screenshootPath,
-                                        ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+    public CambioContratoConsolidadoBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (CambioContratoConsolidado) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
+
 
     protected void initialNavigate() {
         this.navigate(SSUrls.ALTA);

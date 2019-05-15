@@ -1,20 +1,24 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
 import Workout.ORM.Model.ConsultaNaf;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.Operation;
 import org.openqa.selenium.By;
 
-public class ConsultaNafBot extends OperationManager {
+import java.util.HashMap;
+
+public class ConsultaNafBot extends BaseBot {
     private ConsultaNaf op;
 
-    public ConsultaNafBot(LogService logger, ConsultaNaf op, String envProfile, Integer operationTimeout, String screenshootPath,
-                          ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+    public ConsultaNafBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (ConsultaNaf) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
-
     protected void initialNavigate() {
         this.navigate(SSUrls.CONSULTAIPF);
     }
@@ -61,7 +65,7 @@ public class ConsultaNafBot extends OperationManager {
          */
         this.op.setData(this.getDriver().findElement(By.id("SDFPROVNAF")).getText() +
                 this.getDriver().findElement(By.id("SDFNUMNAF")).getText());
-        //TODO: actualizar registro contra la db
+        this.queueService.saveOp(this.op);
 
         /*
          * Enviar formulario.

@@ -1,19 +1,24 @@
 package Workout.Selenium;
 
 import Workout.Config.SSUrls;
-import Workout.Logger.LogService;
 import Workout.ORM.Model.AnulacionBajaPrevia;
-import Workout.ORM.Repository.ProcessStatusRepository;
+import Workout.ORM.Model.Operation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
-public class AnulacionBajaPreviaBot extends OperationManager {
+import java.util.HashMap;
+
+public class AnulacionBajaPreviaBot extends BaseBot {
     private AnulacionBajaPrevia op;
 
-    public AnulacionBajaPreviaBot(LogService logger, AnulacionBajaPrevia op, String envProfile, Integer operationTimeout, String screenshootPath,
-                                  ProcessStatusRepository processRepository) {
-        super(logger, op, envProfile, operationTimeout, screenshootPath, processRepository);
-        this.op = op;
+    public AnulacionBajaPreviaBot(Operation op, HashMap<String, Object> config) {
+        super(op, config);
+        this.op = (AnulacionBajaPrevia) op;
+        this.logger.info("Processing operation " + this.op.getId());
+        if (this.configure()) {
+            this.manageOperation();
+            this.destroy();
+        }
     }
 
     protected void initialNavigate() {
