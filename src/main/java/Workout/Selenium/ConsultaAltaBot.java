@@ -71,7 +71,7 @@ public class ConsultaAltaBot extends BaseBot {
     }
 
     private boolean secondForm() {
-        // Esta parte falla. Habrá que retocarla cuando sea necesario.
+        // TODO: Esta parte falla. Habrá que retocarla cuando sea necesario.
         /*
 
             $this->clearTmpFolder();

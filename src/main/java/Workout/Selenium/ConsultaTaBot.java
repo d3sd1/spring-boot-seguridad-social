@@ -24,7 +24,7 @@ public class ConsultaTaBot extends BaseBot {
 
     protected boolean firstForm() {
 
-        // HACER ESTO CUANDO SEA NECESARIO.
+        // TODO: HACER ESTO CUANDO SEA NECESARIO.
         return false;
     }
 

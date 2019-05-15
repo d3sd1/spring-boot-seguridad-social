@@ -107,6 +107,82 @@ public class QueueService {
         return null;
     }
 
+    public AnulacionAltaPrevia isAnulacionAltaPreviaOnQueue(AnulacionAltaPrevia alta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_ALTA_PREVIA"));
+
+        for (Queue proccess : queue) {
+            AnulacionAltaPrevia qAlta = this.anulacionAltaPreviaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || alta == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(alta.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionAltaConsolidada isAnulacionAltaConsolidadaOnQueue(AnulacionAltaConsolidada alta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_ALTA_CONSOLIDADA"));
+
+        for (Queue proccess : queue) {
+            AnulacionAltaConsolidada qAlta = this.anulacionAltaConsolidadaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || alta == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(alta.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionBajaPrevia isAnulacionBajaPreviaOnQueue(AnulacionBajaPrevia baja) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_BAJA_PREVIA"));
+
+        for (Queue proccess : queue) {
+            AnulacionBajaPrevia qAlta = this.anulacionBajaPreviaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || baja == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(baja.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionBajaConsolidada isAnulacionBajaConsolidadaOnQueue(AnulacionBajaConsolidada baja) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_BAJA_CONSOLIDADA"));
+
+        for (Queue proccess : queue) {
+            AnulacionBajaConsolidada qBaja = this.anulacionBajaConsolidadaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qBaja == null || qBaja.getNaf() == null || qBaja.getIpf() == null || baja == null || baja.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qBaja.getNaf().equals(baja.getNaf()) && qBaja.getIpf().equals(baja.getIpf())) {
+                return qBaja;
+            }
+        }
+        return null;
+    }
+
     public Operation getOpFromQueue(Queue q) {
         String opType = q.getProcessType().getType().toUpperCase();
         Operation op = null;
