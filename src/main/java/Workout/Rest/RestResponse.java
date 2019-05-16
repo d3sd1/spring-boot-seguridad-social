@@ -33,6 +33,7 @@ public class RestResponse {
         UNCAUGHT_EXCEPTION,
         DATE_PASSED,
         CONTRACT_ACCOUNT_NOT_FOUND,
-        NOT_FOUND
+        NOT_FOUND,
+        INVALID_DATE
     }
 }

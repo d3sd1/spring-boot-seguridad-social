@@ -3,10 +3,13 @@ package Workout.Selenium;
 import Workout.Config.SSUrls;
 import Workout.ORM.Model.ConsultaAlta;
 import Workout.ORM.Model.Operation;
+import com.google.gson.Gson;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ConsultaAltaBot extends BaseBot {
     private ConsultaAlta op;
@@ -71,54 +74,38 @@ public class ConsultaAltaBot extends BaseBot {
     }
 
     private boolean secondForm() {
-        // TODO: Esta parte falla. Habrá que retocarla cuando sea necesario.
-        /*
-
-            $this->clearTmpFolder();
-
-            /*
-             * Doble click para descargar el TA, sobre el primer elemento de la tabla (más próximo a la fecha indicada).
-             * Esperar a que cargue antes, ya que es asíncrono.
-             *
-            if (!$this->waitFormSubmit(WebDriverBy::id('Sub0900112079_1_0'))) {
-            $this->container->get("app.dblogger")->info("No se encontró la tabla.");
+        if (!this.waitFormSubmit(By.id("Sub0900112079_1_0"))) {
             return false;
         }
-            $this->container->get("app.dblogger")->info("Clickando elemento...");
+        HashMap<String, HashMap<String, Object>> data = new HashMap<>();
+        data.put("alta", new HashMap<>());
+        data.put("baja", new HashMap<>());
 
-
-            $op = new \stdClass();
-            $op->alta = new \stdClass();
-            $op->baja = new \stdClass();
-
-            $fil = 0;
-            while(true) {
-                $elKeyname = "Sub0900112079_{{col}}_{{fil}}";
-                if(count($this->driver->findElements(WebDriverBy::id(str_replace(array("{{col}}","{{fil}}"),array("1",$fil),$elKeyname)))) === 0) {
-                    break;
-                }
-                $elSsName = $this->driver->findElement(WebDriverBy::id(str_replace(array("{{col}}","{{fil}}"),array("1",$fil),$elKeyname)))->getText();
-                if(stristr($elSsName, 'alta') !== false) {
-                    $op->alta->nombreSS = $elSsName;
-                    $op->alta->fecha = $this->driver->findElement(WebDriverBy::id(str_replace(array("{{col}}","{{fil}}"),array("2",$fil),$elKeyname)))->getText();
-                }
-                else if(stristr($elSsName, 'baja') !== false) {
-                    $op->alta->nombreSS = $elSsName;
-                    $op->alta->fecha = $this->driver->findElement(WebDriverBy::id(str_replace(array("{{col}}","{{fil}}"),array("2",$fil),$elKeyname)))->getText();
-                }
-
-                $fil++;
+        int fil = 0;
+        String elKeyName = "Sub0900112079_{{col}}_{{fil}}";
+        while (true) {
+            List<WebElement> firstElem = this.getDriver().findElements(By.id(elKeyName.replace("{{col}}", "1").replace("{{fil}}", String.valueOf(fil))));
+            if (firstElem.size() == 0) {
+                break;
             }
-            /*
-             * Guardar en la DB.
-             *
-            $this->updateConsultaData(
-                    json_encode($op)
-            );
+            String elSsName = firstElem.get(0).getText();
+            String fecha = this.getDriver().findElement(By.id(elKeyName.replace("{{col}}", "2").replace("{{fil}}", String.valueOf(fil)))).getText();
+            if (elSsName.contains("alta")) {
+                data.get("alta").put("nombreSS", elSsName);
+                data.get("alta").put("fecha", fecha);
+            } else if (elSsName.contains("baja")) {
+                data.get("baja").put("nombreSS", elSsName);
+                data.get("baja").put("fecha", fecha);
+            }
+            fil++;
+        }
 
-            return true;
-         */
-        return false;
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        this.op.setData(json);
+        this.queueService.saveOp(this.op);
+
+        return true;
     }
 
 }

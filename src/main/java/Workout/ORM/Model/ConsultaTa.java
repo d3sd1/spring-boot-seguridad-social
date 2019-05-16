@@ -15,7 +15,7 @@ public class ConsultaTa extends Consulta {
     private ContractAccount cca;
 
     @Column(nullable = false, unique = true)
-    private long naf;
+    private String naf;
 
     @Column(nullable = false, unique = false)
     private LocalDateTime frc;
@@ -28,11 +28,11 @@ public class ConsultaTa extends Consulta {
         this.cca = cca;
     }
 
-    public long getNaf() {
+    public String getNaf() {
         return naf;
     }
 
-    public void setNaf(long naf) {
+    public void setNaf(String naf) {
         this.naf = naf;
     }
 

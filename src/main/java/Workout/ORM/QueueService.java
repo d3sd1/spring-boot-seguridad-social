@@ -183,6 +183,101 @@ public class QueueService {
         return null;
     }
 
+    public ConsultaNaf isConsultaNafOnQueue(ConsultaNaf consultaNaf) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_NAF"));
+
+        for (Queue proccess : queue) {
+            ConsultaNaf qConsultaNaf = this.consultaNafRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaNaf == null || qConsultaNaf.getIpf() == null || consultaNaf == null || consultaNaf.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaNaf.getIpf().equals(consultaNaf.getIpf())) {
+                return qConsultaNaf;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaIpf isConsultaIpfOnQueue(ConsultaIpf consultaIpf) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_IPF"));
+
+        for (Queue proccess : queue) {
+            ConsultaIpf qConsultaIpf = this.consultaIpfRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaIpf == null || qConsultaIpf.getNaf() == null || consultaIpf == null || consultaIpf.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaIpf.getNaf().equals(consultaIpf.getNaf())) {
+                return qConsultaIpf;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaTa isConsultaTaOnQueue(ConsultaTa consultaTa) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_TA"));
+
+        for (Queue proccess : queue) {
+            ConsultaTa qConsultaTa = this.consultaTaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaTa == null || qConsultaTa.getNaf() == null || consultaTa == null || consultaTa.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaTa.getNaf().equals(consultaTa.getNaf())) {
+                return qConsultaTa;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaAlta isConsultaAltaOnQueue(ConsultaAlta consultaAlta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_ALTA"));
+
+        for (Queue proccess : queue) {
+            ConsultaAlta qConsultaAlta = this.consultaAltaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaAlta == null || qConsultaAlta.getNaf() == null || consultaAlta == null || consultaAlta.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaAlta.getNaf().equals(consultaAlta.getNaf())) {
+                return qConsultaAlta;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaAltasCcc isConsultaCccOnQueue(ConsultaAltasCcc consultaAltasCcc) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_ALTAS_CCC"));
+
+        for (Queue proccess : queue) {
+            ConsultaAltasCcc qConsultAltasCcc = this.consultaAltasCccRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultAltasCcc == null || qConsultAltasCcc.getCca() == null || consultaAltasCcc == null || consultaAltasCcc.getCca() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultAltasCcc.getCca().equals(consultaAltasCcc.getCca())) {
+                return qConsultAltasCcc;
+            }
+        }
+        return null;
+    }
+
     public Operation getOpFromQueue(Queue q) {
         String opType = q.getProcessType().getType().toUpperCase();
         Operation op = null;
