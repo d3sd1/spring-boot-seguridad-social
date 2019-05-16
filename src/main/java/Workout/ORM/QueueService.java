@@ -88,6 +88,25 @@ public class QueueService {
         return null;
     }
 
+    public CambioContratoConsolidado isCambioContratoConsolidadoOnQueue(CambioContratoConsolidado cambioContratoConsolidado) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CAMBIO_CONTRATO_CONSOLIDADO"));
+
+        for (Queue proccess : queue) {
+            CambioContratoConsolidado qCambioContratoConsolidado = this.cambioContratoConsolidadoRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qCambioContratoConsolidado == null || qCambioContratoConsolidado.getNaf() == null || cambioContratoConsolidado == null || cambioContratoConsolidado.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qCambioContratoConsolidado.getNaf().equals(qCambioContratoConsolidado.getNaf()) && qCambioContratoConsolidado.getIpf().equals(qCambioContratoConsolidado.getIpf())) {
+                return qCambioContratoConsolidado;
+            }
+        }
+        return null;
+    }
+
     public Baja isBajaOnQueue(Baja baja) {
 
         List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("BAJA"));

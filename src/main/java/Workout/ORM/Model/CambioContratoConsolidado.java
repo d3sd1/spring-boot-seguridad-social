@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Transactional
@@ -26,7 +26,7 @@ public class CambioContratoConsolidado extends Operation {
     @OneToOne
     private ContractKey tco;
     @Column(nullable = false, unique = false)
-    private LocalDateTime frc;
+    private LocalDate frc;
 
     @OneToOne
     private ContractCoefficient coe;
@@ -71,11 +71,11 @@ public class CambioContratoConsolidado extends Operation {
         this.tco = tco;
     }
 
-    public LocalDateTime getFrc() {
+    public LocalDate getFrc() {
         return frc;
     }
 
-    public void setFrc(LocalDateTime frc) {
+    public void setFrc(LocalDate frc) {
         this.frc = frc;
     }
 
