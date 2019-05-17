@@ -43,9 +43,11 @@ public class QueueManager {
     @Autowired
     private QueueService queueService;
 
-    @Scheduled(fixedRate = 5000, initialDelay = 5000)
+    @Scheduled(fixedRate = 3000, initialDelay = 5000)
     @Async
-    public void processQueue() {
+    public void processQueue() throws InterruptedException {
+
+        Thread.sleep((long) ((Math.random() * ((5000 - 1000) + 1)) + 1000));
         List<Queue> queue = this.queueRepository.findAll();
         this.logger.debug("Checking for new operations...");
 

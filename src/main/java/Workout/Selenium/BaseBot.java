@@ -107,10 +107,12 @@ public abstract class BaseBot {
         if (this.driver != null) {
             this.driver.quit();
         }
-        this.op.setProcessTime(
-                (int) this.op.getDateProcessed().until(LocalDateTime.now(), ChronoUnit.SECONDS)
-        );
-        this.queueService.saveOp(op);
+        if (this.op != null) {
+            this.op.setProcessTime(
+                    (int) this.op.getDateProcessed().until(LocalDateTime.now(), ChronoUnit.SECONDS)
+            );
+            this.queueService.saveOp(op);
+        }
         this.op = null;
     }
 
@@ -130,12 +132,17 @@ public abstract class BaseBot {
 
 
         this.logger.info("Procesando operación con ID " + this.op.getId() + " del tipo " + this.op.getClass().getSimpleName());
-        if (this.isSsDown()) {
-            logger.error("La página de la seguridad social está offline (detectado antes de empezar la operación).");
+        this.initialNavigate();
+        boolean success = false;
+        try {
+            success = this.firstForm();
+        } catch (NoSuchSessionException e) {
+            // Nothing since it's not rly an exception (about SS down), already logged.
+            return;
+        } catch (Exception e) {
+            this.logger.error("Ha ocurrido un error al procesar la operación: " + e.getMessage());
             return;
         }
-        this.initialNavigate();
-        boolean success = this.firstForm();
 
         if (success) {
             this.updateOpStatus("COMPLETED");
@@ -197,8 +204,15 @@ public abstract class BaseBot {
     }
 
     public void navigate(String url) {
-        this.getDriver().get(url);
-        this.waitPageLoad();
+        try {
+            this.getDriver().get(url);
+            this.waitPageLoad();
+        } catch (Exception e) {
+            logger.error("La página de la seguridad social está offline (detectado antes de empezar la operación).");
+            this.driver.quit();
+            this.op.setErrMsg("Seguridad social caída. Petición abortada.");
+            this.updateOpStatus("ERROR");
+        }
     }
 
 
@@ -210,24 +224,6 @@ public abstract class BaseBot {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public boolean isSsDown() {
-        /* We cannot check this way since this nav has no certificate lol.
-        try {
-            URL url = new URL(SSUrls.TEST_STATUS_URL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            int code = connection.getResponseCode();
-            System.out.println("CODE: " + code);
-            return code < 200 || code >= 300;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return true;
-        }*/
-        return false;
     }
 
     private boolean isFalsePositiveError(String webMessageText) {
@@ -253,10 +249,6 @@ public abstract class BaseBot {
     private boolean checkFormErrors() {
         this.logger.info("Comprobando errores de la operación " + this.op.getId());
         /* Primero comprobar errores críticos de la web */
-        if (this.isSsDown()) {
-            logger.error("La página de la seguridad social está offline (detectado al enviar formulario).");
-            return true;
-        }
         WebElement errorBox = this.getDriver().findElement(By.id("DIL"));
 
         /*
