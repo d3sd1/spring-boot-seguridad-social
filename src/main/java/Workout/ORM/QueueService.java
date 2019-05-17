@@ -88,6 +88,25 @@ public class QueueService {
         return null;
     }
 
+    public CambioContratoConsolidado isCambioContratoConsolidadoOnQueue(CambioContratoConsolidado cambioContratoConsolidado) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CAMBIO_CONTRATO_CONSOLIDADO"));
+
+        for (Queue proccess : queue) {
+            CambioContratoConsolidado qCambioContratoConsolidado = this.cambioContratoConsolidadoRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qCambioContratoConsolidado == null || qCambioContratoConsolidado.getNaf() == null || cambioContratoConsolidado == null || cambioContratoConsolidado.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qCambioContratoConsolidado.getNaf().equals(qCambioContratoConsolidado.getNaf()) && qCambioContratoConsolidado.getIpf().equals(qCambioContratoConsolidado.getIpf())) {
+                return qCambioContratoConsolidado;
+            }
+        }
+        return null;
+    }
+
     public Baja isBajaOnQueue(Baja baja) {
 
         List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("BAJA"));
@@ -102,6 +121,177 @@ public class QueueService {
             }
             if (qBaja.getNaf().equals(baja.getNaf()) && qBaja.getIpf().equals(baja.getIpf())) {
                 return qBaja;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionAltaPrevia isAnulacionAltaPreviaOnQueue(AnulacionAltaPrevia alta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_ALTA_PREVIA"));
+
+        for (Queue proccess : queue) {
+            AnulacionAltaPrevia qAlta = this.anulacionAltaPreviaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || alta == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(alta.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionAltaConsolidada isAnulacionAltaConsolidadaOnQueue(AnulacionAltaConsolidada alta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_ALTA_CONSOLIDADA"));
+
+        for (Queue proccess : queue) {
+            AnulacionAltaConsolidada qAlta = this.anulacionAltaConsolidadaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || alta == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(alta.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionBajaPrevia isAnulacionBajaPreviaOnQueue(AnulacionBajaPrevia baja) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_BAJA_PREVIA"));
+
+        for (Queue proccess : queue) {
+            AnulacionBajaPrevia qAlta = this.anulacionBajaPreviaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qAlta == null || qAlta.getNaf() == null || baja == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qAlta.getNaf().equals(baja.getNaf())) {
+                return qAlta;
+            }
+        }
+        return null;
+    }
+
+    public AnulacionBajaConsolidada isAnulacionBajaConsolidadaOnQueue(AnulacionBajaConsolidada baja) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("ANULACION_BAJA_CONSOLIDADA"));
+
+        for (Queue proccess : queue) {
+            AnulacionBajaConsolidada qBaja = this.anulacionBajaConsolidadaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qBaja == null || qBaja.getNaf() == null || qBaja.getIpf() == null || baja == null || baja.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qBaja.getNaf().equals(baja.getNaf()) && qBaja.getIpf().equals(baja.getIpf())) {
+                return qBaja;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaNaf isConsultaNafOnQueue(ConsultaNaf consultaNaf) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_NAF"));
+
+        for (Queue proccess : queue) {
+            ConsultaNaf qConsultaNaf = this.consultaNafRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaNaf == null || qConsultaNaf.getIpf() == null || consultaNaf == null || consultaNaf.getIpf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaNaf.getIpf().equals(consultaNaf.getIpf())) {
+                return qConsultaNaf;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaIpf isConsultaIpfOnQueue(ConsultaIpf consultaIpf) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_IPF"));
+
+        for (Queue proccess : queue) {
+            ConsultaIpf qConsultaIpf = this.consultaIpfRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaIpf == null || qConsultaIpf.getNaf() == null || consultaIpf == null || consultaIpf.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaIpf.getNaf().equals(consultaIpf.getNaf())) {
+                return qConsultaIpf;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaTa isConsultaTaOnQueue(ConsultaTa consultaTa) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_TA"));
+
+        for (Queue proccess : queue) {
+            ConsultaTa qConsultaTa = this.consultaTaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaTa == null || qConsultaTa.getNaf() == null || consultaTa == null || consultaTa.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaTa.getNaf().equals(consultaTa.getNaf())) {
+                return qConsultaTa;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaAlta isConsultaAltaOnQueue(ConsultaAlta consultaAlta) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_ALTA"));
+
+        for (Queue proccess : queue) {
+            ConsultaAlta qConsultaAlta = this.consultaAltaRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultaAlta == null || qConsultaAlta.getNaf() == null || consultaAlta == null || consultaAlta.getNaf() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultaAlta.getNaf().equals(consultaAlta.getNaf())) {
+                return qConsultaAlta;
+            }
+        }
+        return null;
+    }
+
+    public ConsultaAltasCcc isConsultaCccOnQueue(ConsultaAltasCcc consultaAltasCcc) {
+
+        List<Queue> queue = this.queueRepository.findAllByProcessType(this.processTypeRepository.findByType("CONSULTA_ALTAS_CCC"));
+
+        for (Queue proccess : queue) {
+            ConsultaAltasCcc qConsultAltasCcc = this.consultaAltasCccRepository.findByIdOrderByDateProcessedDesc(proccess.getRefId());
+
+            // Delete if the key is missing.
+            if (qConsultAltasCcc == null || qConsultAltasCcc.getCca() == null || consultaAltasCcc == null || consultaAltasCcc.getCca() == null) {
+                this.queueRepository.delete(proccess);
+                continue;
+            }
+            if (qConsultAltasCcc.getCca().equals(consultaAltasCcc.getCca())) {
+                return qConsultAltasCcc;
             }
         }
         return null;

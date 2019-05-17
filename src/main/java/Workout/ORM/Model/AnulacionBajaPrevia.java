@@ -4,7 +4,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Transactional
@@ -18,7 +18,7 @@ public class AnulacionBajaPrevia extends Operation {
     private String naf;
 
     @Column(nullable = false, unique = false)
-    private LocalDateTime frb;
+    private LocalDate frb;
 
     public ContractAccount getCca() {
         return cca;
@@ -36,11 +36,11 @@ public class AnulacionBajaPrevia extends Operation {
         this.naf = naf;
     }
 
-    public LocalDateTime getFrb() {
+    public LocalDate getFrb() {
         return frb;
     }
 
-    public void setFrb(LocalDateTime frb) {
+    public void setFrb(LocalDate frb) {
         this.frb = frb;
     }
 }
