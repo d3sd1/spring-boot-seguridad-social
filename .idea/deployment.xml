@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="SS BOT V2">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Bot SS new" createEmptyFolders="true" filePermissions="511" folderPermissions="511">
     <serverData>
-      <paths name="SS BOT V2">
+      <paths name="Bot SS new">
         <serverdata>
           <mappings>
-            <mapping deploy="/var/www/" local="$PROJECT_DIR$/distribution" web="/" />
+            <mapping deploy="/" local="$PROJECT_DIR$/" web="/" />
           </mappings>
         </serverdata>
       </paths>

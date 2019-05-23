@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/cambio/contrato/consolidado")
+@CrossOrigin
 public class CambioContratoConsolidadoRest {
 
     @Autowired

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/alta/anulacion/consolidada")
+@CrossOrigin
 public class AnulacionAltaConsolidadaRest {
 
     @Autowired

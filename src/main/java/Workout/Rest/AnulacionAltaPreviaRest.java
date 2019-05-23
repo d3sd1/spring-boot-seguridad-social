@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/alta/anulacion/previa")
+@CrossOrigin
 public class AnulacionAltaPreviaRest {
 
     @Autowired

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/consulta/alta")
+@CrossOrigin
 public class ConsultaAltaRest {
     @Autowired
     private ConsultaAltaRepository consultaAltaRepository;

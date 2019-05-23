@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/baja")
+@CrossOrigin
 public class BajaRest {
 
     @Autowired

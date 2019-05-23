@@ -90,6 +90,8 @@ public abstract class BaseBot {
         opts.setHeadless(!this.isDev);
         try {
             this.driver = new FirefoxDriver(opts);
+            driver.manage().window().setPosition(new Point(0,0));
+            driver.manage().window().setSize(new Dimension(1024,768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             this.logger.error("Firefox not installed. Please install it before using bot.");
@@ -220,7 +222,7 @@ public abstract class BaseBot {
         try {
             File scrFile = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(scrFile, new File(this.screenshootPath + File.separator +
-                    this.op.getClass().getSimpleName() + File.separator + this.op.getId() + ".png"));
+                    this.op.getClass().getSimpleName() + File.separator + this.op.getId() + File.separator + System.currentTimeMillis() + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -267,7 +269,7 @@ public abstract class BaseBot {
             this.updateOpStatus("ERROR");
             this.removeOpFromQueue();
             this.queueService.saveOp(this.op);
-            this.logger.warning("Error en operación " + this.op.getId() + ": " + errorBox.getText());
+            this.logger.warning("Error en operación " + this.op.getClass().getSimpleName() + " con ID " + this.op.getId() + ": " + errorBox.getText());
             return true;
         }
         return false;
