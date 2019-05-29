@@ -34,7 +34,7 @@ public class ConsultaTaBot extends BaseBot {
          * Segundo campo, diez dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFTESNAF")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(0, 2) : "");
-        this.getDriver().findElement(By.name("txt_SDFNAF")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 10) : "");
+        this.getDriver().findElement(By.name("txt_SDFNAF")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 12) : "");
 
         /*
          * Rellenar régimen
@@ -48,7 +48,7 @@ public class ConsultaTaBot extends BaseBot {
          * Segundo campo, nueve dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFTESCTA")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
-        this.getDriver().findElement(By.name("txt_SDFCUENTA")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+        this.getDriver().findElement(By.name("txt_SDFCUENTA")).sendKeys(this.op.getCca().getCcc().substring(2, 11));
 
         /*
          * Rellenar fecha real de la consulta.

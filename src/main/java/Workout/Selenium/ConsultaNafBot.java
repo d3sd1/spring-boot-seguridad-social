@@ -36,7 +36,7 @@ public class ConsultaNafBot extends BaseBot {
          * Primer campo, un dígito INT
          * Segundo campo, diez dígitos INT
          */
-        this.getDriver().findElement(By.name("txt_SDFTIPO_ayuda")).sendKeys(this.op.getIpt());
+        this.getDriver().findElement(By.name("txt_SDFTIPO_ayuda")).sendKeys(String.valueOf(Integer.parseInt(this.op.getIpt())));
         this.getDriver().findElement(By.name("txt_SDFNUMERO")).sendKeys(this.op.getIpf());
 
         /*

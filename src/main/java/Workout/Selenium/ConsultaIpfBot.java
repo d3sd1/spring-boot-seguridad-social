@@ -39,7 +39,7 @@ public class ConsultaIpfBot extends BaseBot {
          * Segundo campo, diez dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFPROVANT")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(0, 2) : "");
-        this.getDriver().findElement(By.name("txt_SDFNUMANT")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 10) : "");
+        this.getDriver().findElement(By.name("txt_SDFNUMANT")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 12) : "");
 
         /*
          * Clickar en el botón de enviar

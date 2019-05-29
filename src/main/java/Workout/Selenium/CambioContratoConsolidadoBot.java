@@ -39,14 +39,14 @@ public class CambioContratoConsolidadoBot extends BaseBot {
          * Segundo campo, diez dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFPROAFI")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(0, 2) : "");
-        this.getDriver().findElement(By.name("txt_SDFCODAFI")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 10) : "");
+        this.getDriver().findElement(By.name("txt_SDFCODAFI")).sendKeys(this.op.getNaf() != null ? this.op.getNaf().substring(2, 12) : "");
 
         /*
          * Rellenar identificación de personas físicas
          * Primer campo, un dígito INT
          * Segundo campo, diez dígitos INT
          */
-        this.getDriver().findElement(By.name("txt_SDFTIPPFI_ayuda")).sendKeys(this.op.getIpt());
+        this.getDriver().findElement(By.name("txt_SDFTIPPFI_ayuda")).sendKeys(String.valueOf(Integer.parseInt(this.op.getIpt())));
         this.getDriver().findElement(By.name("txt_SDFNUMPFI")).sendKeys(this.op.getIpf());
 
         /*
@@ -61,7 +61,7 @@ public class CambioContratoConsolidadoBot extends BaseBot {
          * Segundo campo, nueve dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFTESCTACOT")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
-        this.getDriver().findElement(By.name("txt_SDFCTACOT")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+        this.getDriver().findElement(By.name("txt_SDFCTACOT")).sendKeys(this.op.getCca().getCcc().substring(2, 11));
 
         /*
          * Clickar en el botón de enviar

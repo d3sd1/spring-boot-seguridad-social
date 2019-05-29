@@ -39,7 +39,7 @@ public class ConsultaAltasCccBot extends BaseBot {
          * Segundo campo, nueve dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFTESCTA")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
-        this.getDriver().findElement(By.name("txt_SDFNUMCTA")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+        this.getDriver().findElement(By.name("txt_SDFNUMCTA")).sendKeys(this.op.getCca().getCcc().substring(2, 11));
 
         /*
          * Clickar en el botón de enviar

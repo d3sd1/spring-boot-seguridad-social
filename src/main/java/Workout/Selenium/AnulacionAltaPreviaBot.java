@@ -46,7 +46,7 @@ public class AnulacionAltaPreviaBot extends BaseBot {
          * Segundo campo, nueve dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFTESCC")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
-        this.getDriver().findElement(By.name("txt_SDFNUMCC")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+        this.getDriver().findElement(By.name("txt_SDFNUMCC")).sendKeys(this.op.getCca().getCcc().substring(2, 11));
 
         /*
          *  Seleccionar tipo "anulación alta".

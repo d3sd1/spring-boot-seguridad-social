@@ -39,7 +39,7 @@ public class AnulacionBajaConsolidadaBot extends BaseBot {
          * Segundo campo, diez dígitos INT
          */
 
-        this.getDriver().findElement(By.name("txt_SDFIDTIPOPF_ayuda")).sendKeys(this.op.getIpt());
+        this.getDriver().findElement(By.name("txt_SDFIDTIPOPF_ayuda")).sendKeys(String.valueOf(Integer.parseInt(this.op.getIpt())));
         this.getDriver().findElement(By.name("txt_SDFIDNIDEPF")).sendKeys(this.op.getIpf());
 
         /*
@@ -54,7 +54,7 @@ public class AnulacionBajaConsolidadaBot extends BaseBot {
          * Segundo campo, nueve dígitos INT
          */
         this.getDriver().findElement(By.name("txt_SDFIDTESCTA")).sendKeys(this.op.getCca().getCcc().substring(0, 2));
-        this.getDriver().findElement(By.name("txt_SDFIDCTACON")).sendKeys(this.op.getCca().getCcc().substring(2, 9));
+        this.getDriver().findElement(By.name("txt_SDFIDCTACON")).sendKeys(this.op.getCca().getCcc().substring(2, 11));
 
         /*
          * Rellenar fecha real de la baja.
