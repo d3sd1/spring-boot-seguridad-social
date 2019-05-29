@@ -1,1 +1,0 @@
-pkill -9 java && java -jar wo-ss-bot.jar  &> logs/$(date -d "today" +"%Y%m%d%H%M").log

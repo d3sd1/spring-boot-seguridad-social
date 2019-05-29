@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/consulta/ipf")
+@CrossOrigin
 public class ConsultaIpfRest {
     @Autowired
     private ConsultaIpfRepository consultaIpfRepository;

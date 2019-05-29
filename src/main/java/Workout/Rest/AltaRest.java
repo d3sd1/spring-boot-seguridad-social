@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 @RestController
 @RequestMapping("/alta")
+@CrossOrigin
 public class AltaRest {
 
     @Autowired

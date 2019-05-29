@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="3a1648dc-ce0e-4532-bf96-df363b7a2e9d" name="SS BOT V2" url="http://192.168.1.19">
-        <fileTransfer host="192.168.1.19" port="22" accessType="SFTP">
+      <webServer id="64e868ff-3465-485f-8c70-3b633514cfef" name="Bot SS new" url="http://192.168.1.19">
+        <fileTransfer host="192.168.1.19" port="22" rootFolder="/var/www/" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

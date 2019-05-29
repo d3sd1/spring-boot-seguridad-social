@@ -86,8 +86,9 @@ public class LogService {
     private void sendErrorMail(String msg) {
         if (this.activeProfile.equals("prod")) {
             SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("admin@workout-events.com");
             message.setTo(this.mailNotifierList.split(","));
-            message.setSubject("prueba");
+            message.setSubject("Alerta del bot SS V2");
             message.setText(msg);
             this.emailSender.send(message);
         }

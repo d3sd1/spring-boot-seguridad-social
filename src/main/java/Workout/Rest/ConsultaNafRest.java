@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/consulta/naf")
+@CrossOrigin
 public class ConsultaNafRest {
     @Autowired
     private ConsultaNafRepository consultaNafRepository;
