@@ -304,41 +304,41 @@ public class QueueService {
             case "ALTA":
                 op = this.altaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "ANULACIONALTACONSOLIDADA":
+            case "ANULACION_ALTA_CONSOLIDADA":
                 op = this.anulacionAltaConsolidadaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "ANULACIONALTAPREVIA":
+            case "ANULACION_ALTA_PREVIA":
                 op = this.anulacionAltaPreviaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "ANULACIONBAJACONSOLIDADA":
+            case "ANULACION_BAJA_CONSOLIDADA":
                 op = this.anulacionBajaConsolidadaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "ANULACIONBAJAPREVIA":
+            case "ANULACION_BAJA_PREVIA":
                 op = this.anulacionBajaPreviaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
             case "BAJA":
                 op = this.bajaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CAMBIOCONTRATOCONSOLIDADO":
+            case "CAMBIO_CONTRATO_CONSOLIDADO":
                 op = this.cambioContratoConsolidadoRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CAMBIOCONTRATOPREVIO":
+            case "CAMBIO_CONTRATO_PREVIO":
                 op = null;
                 this.logger.error("Cambio contrato previo not yet implemented.");
                 break;
-            case "CONSULTAALTA":
+            case "CONSULTA_ALTA":
                 op = this.consultaAltaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CONSULTAALTASCCC":
+            case "CONSULTA_ALTAS_CCC":
                 op = this.consultaAltasCccRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CONSULTAIPF":
+            case "CONSULTA_IPF":
                 op = this.consultaIpfRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CONSULTANAF":
+            case "CONSULTA_NAF":
                 op = this.consultaNafRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
-            case "CONSULTATA":
+            case "CONSULTA_TA":
                 op = this.consultaTaRepository.findByIdOrderByDateProcessedDesc(q.getRefId());
                 break;
 
