@@ -55,7 +55,7 @@ public class ConsultaNafRest {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Object> postOp(@RequestBody ConsultaNaf consultaNaf) {
         RestResponse resp = new RestResponse();
         /*

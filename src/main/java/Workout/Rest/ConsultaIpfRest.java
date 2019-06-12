@@ -55,7 +55,7 @@ public class ConsultaIpfRest {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Object> postOp(@RequestBody ConsultaIpf consultaIpf) {
         RestResponse resp = new RestResponse();
         /*

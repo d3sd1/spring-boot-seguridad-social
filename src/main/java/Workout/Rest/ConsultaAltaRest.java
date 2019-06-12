@@ -54,7 +54,7 @@ public class ConsultaAltaRest {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Object> postOp(@RequestBody ConsultaAlta consultaAlta) {
         RestResponse resp = new RestResponse();
         /*

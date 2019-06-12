@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 @CrossOrigin
 public class DefaultRest {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<Object> getAlta(@PathVariable long altaId) {
         RestResponse resp = new RestResponse();
         resp.setMessage("Welcome!");
