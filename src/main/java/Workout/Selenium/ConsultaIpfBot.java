@@ -22,7 +22,7 @@ public class ConsultaIpfBot extends BaseBot {
     }
 
     protected void initialNavigate() {
-        this.navigate(SSUrls.CONSULTAIPF);
+        this.navigate(SSUrls.CONSULTA_IPF);
     }
 
     protected boolean firstForm() {

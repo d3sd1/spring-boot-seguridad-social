@@ -21,7 +21,7 @@ public class AnulacionBajaConsolidadaBot extends BaseBot {
     }
 
     protected void initialNavigate() {
-        this.navigate(SSUrls.ANULACIONALTACONSOLIDADA);
+        this.navigate(SSUrls.ANULACION_ALTA_CONSOLIDADA);
     }
 
     protected boolean firstForm() {
