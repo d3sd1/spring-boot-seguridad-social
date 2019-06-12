@@ -5,7 +5,7 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class Consulta extends Operation {
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = false)
     private String data;
 
     public String getData() {
