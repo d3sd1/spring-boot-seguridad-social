@@ -11,6 +11,7 @@
             <excludedPath local="true" path="$PROJECT_DIR$/target" />
             <excludedPath local="true" path="$PROJECT_DIR$/TecLand_REST.iml" />
             <excludedPath local="true" path="$PROJECT_DIR$/html/phpmyadmin" />
+            <excludedPath local="true" path="$PROJECT_DIR$/src/main/resources/drivers" />
           </excludedPaths>
         </serverdata>
       </paths>

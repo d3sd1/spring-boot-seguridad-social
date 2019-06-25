@@ -117,14 +117,15 @@ public class BajaRest {
             resp.setMessage(RestResponse.Message.DATE_PASSED);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
-        if (baja.getFrb() != null && baja.getFfv().isBefore(LocalDate.now())) {
+        /* eliminado por que sudo
+        if (baja.getFrb() != null && baja.getFrb().isBefore(LocalDate.now())) {
             resp.setMessage(RestResponse.Message.DATE_EXPIRE_INVALID);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
         if (baja.getFfv() != null && baja.getFfv().isBefore(LocalDate.now())) {
             resp.setMessage(RestResponse.Message.DATE_EXPIRE_INVALID);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
-        }
+        }*/
 
 
         Baja queueBaja = this.queueService.isBajaOnQueue(baja);

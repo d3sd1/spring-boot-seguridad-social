@@ -26,8 +26,8 @@ public class Baja extends Operation {
     @Column(nullable = false, unique = false)
     private LocalDate frb;
 
-    @Column(nullable = false, unique = false)
-    private LocalDate ffv;
+    @Column(nullable = true, unique = false)
+    private LocalDate ffv = null;
 
     @Column(nullable = true, unique = false)
     private int gco;
