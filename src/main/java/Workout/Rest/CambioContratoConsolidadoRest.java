@@ -107,7 +107,7 @@ public class CambioContratoConsolidadoRest {
         cambioContratoConsolidado.setDateInit(LocalDateTime.now());
         cambioContratoConsolidado.setProcessTime(0);
 
-        if (cambioContratoConsolidado.getIpt().equals(6)) {
+        if (Integer.parseInt(cambioContratoConsolidado.getIpt()) == 6) {
             cambioContratoConsolidado.setIpf("0" + cambioContratoConsolidado.getIpf());
         }
 

@@ -104,7 +104,7 @@ public class AltaRest {
         alta.setDateInit(LocalDateTime.now());
         alta.setProcessTime(0);
 
-        if (alta.getIpt().equals(6)) {
+        if (Integer.parseInt(alta.getIpt()) == 6) {
             alta.setIpf("0" + alta.getIpf());
         }
         /*

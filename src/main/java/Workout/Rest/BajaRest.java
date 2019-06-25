@@ -95,7 +95,7 @@ public class BajaRest {
         baja.setDateInit(LocalDateTime.now());
         baja.setProcessTime(0);
 
-        if (baja.getIpt().equals(6)) {
+        if (Integer.parseInt(baja.getIpt()) == 6) {
             baja.setIpf("0" + baja.getIpf());
         }
         /*
