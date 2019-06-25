@@ -45,9 +45,9 @@ public class QueueManager {
 
     //@Async decomentar esto para que sea asincrono. modo secuencial activado por servidor low-elo
     @Scheduled(fixedRate = 3000, initialDelay = 5000)
-    public void processQueue() throws InterruptedException {
-
-        Thread.sleep((long) ((Math.random() * ((5000 - 1000) + 1)) + 1000));
+    public void processQueue()  { //throws InterruptedException
+//desactivado sleeper por el modo sencuelcial. reactivar en paralelo
+        //Thread.sleep((long) ((Math.random() * ((5000 - 1000) + 1)) + 1000));
         List<Queue> queue = this.queueRepository.findAll();
         this.logger.debug("Checking for new operations...");
 
