@@ -176,13 +176,9 @@ public abstract class BaseBot {
             params.put("optype", this.op.getClass().getSimpleName().toLowerCase());
             params.put("result", this.op.getStatus().getStatus());
             params.put("resultmessage", this.op.getErrMsg());
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(gson.toJson(params));
-            oos.close();
 
             String finalCallback = plainUrl + (plainUrl.indexOf("?") == -1 ? "?":"&") +
-                    "response=" + Base64.getEncoder().encodeToString(baos.toByteArray());
+                    "response=" + Base64.getEncoder().encodeToString(gson.toJson(params).getBytes());
 
 
 
