@@ -16,12 +16,10 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.zeroturnaround.zip.commons.FileUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
@@ -183,11 +181,24 @@ public abstract class BaseBot {
             oos.writeObject(gson.toJson(params));
             oos.close();
 
-            URL url = new URL(plainUrl + "&response=" + Base64.getEncoder().encodeToString(baos.toByteArray()));
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.connect();
+            String finalCallback = plainUrl + (plainUrl.indexOf("?") == -1 ? "?":"&") +
+                    "response=" + Base64.getEncoder().encodeToString(baos.toByteArray());
+
+
+
+            URL con = new URL(finalCallback);
+            URLConnection yc = con.openConnection();
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            yc.getInputStream()));
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null)
+                System.out.println(inputLine);
+            in.close();
+
+            this.logger.info("Ejecutado callback satisfactoriamente:" +
+                    + this.op.getId() + " del tipo " + this.op.getClass().getSimpleName() + " -> " + finalCallback);
         } catch (IOException e) {
             this.logger.info("Ha ocurrido un error al ejecutar el callback de la operación con ID "
                     + this.op.getId() + " del tipo " + this.op.getClass().getSimpleName());
