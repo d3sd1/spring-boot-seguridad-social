@@ -116,7 +116,9 @@ public class QueueManager {
                     Object instance = constructor.newInstance(op, config);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    this.logger.error("Class not found for queue reflection: " + e.getMessage());
+                    if(e.getMessage() != null) {
+                        this.logger.error("Class not found for queue reflection: " + e.getMessage());
+                    }
                 }
             }
         }
