@@ -92,7 +92,7 @@ public abstract class BaseBot {
             driver.manage().window().setSize(new Dimension(1024,768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
-            this.logger.error("Firefox not installed. Please install it before using bot.");
+            this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
             return false;
         }
         return true;
@@ -105,7 +105,8 @@ public abstract class BaseBot {
 
     protected void destroy() {
         if (this.driver != null) {
-            this.driver.quit();
+            this.driver.close();
+            //this.driver.quit(); remove due to queue rflection error
         }
         if (this.op != null) {
             this.op.setProcessTime(
@@ -218,7 +219,7 @@ public abstract class BaseBot {
             this.waitPageLoad();
         } catch (Exception e) {
             logger.error("La página de la seguridad social está offline (detectado antes de empezar la operación).");
-            this.driver.quit();
+            this.driver.close();
             this.op.setErrMsg("Seguridad social caída. Petición abortada.");
             this.updateOpStatus("ERROR");
         }

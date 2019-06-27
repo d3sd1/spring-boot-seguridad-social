@@ -68,6 +68,48 @@ public class QueueManager {
                 // Status must be set here for prevent ghosting.
                 op.setStatus(this.processStatusRepository.findByStatus("IN_PROCESS"));
                 this.queueService.saveOp(op);
+                String className = op.getClass().getSimpleName();
+                this.logger.info("Reflecting class " + className);
+                /*switch(className.toLowerCase()) {
+                    case "alta":
+
+                        break;
+                    case "anulacionaltaconsolidada":
+
+                        break;
+                    case "anulacionaltaprevia":
+
+                        break;
+                    case "anulacionbajaconsolidada":
+
+                        break;
+                    case "anulacionbajaprevia":
+
+                        break;
+                    case "baja":
+
+                        break;
+                    case "cambiocontratoconsolidado":
+
+                        break;
+                    case "consultaalta":
+
+                        break;
+                    case "consultaaltasccc":
+
+                        break;
+                    case "consultaipf":
+
+                        break;
+                    case "consultanaf":
+
+                        break;
+                    case "consultata":
+
+                        break;
+                    default:
+                        this.logger.error("Class not found for queue reflection: " + className);
+                }*/
                 try {
                     Class<?> clazz = Class.forName("Workout.Selenium." + op.getClass().getSimpleName() + "Bot");
                     Constructor<?> constructor = clazz.getConstructor(Operation.class, HashMap.class);
