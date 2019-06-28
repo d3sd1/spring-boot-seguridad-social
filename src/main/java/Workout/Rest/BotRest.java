@@ -3,6 +3,8 @@ package Workout.Rest;
 import Workout.Logger.LogRepository;
 import Workout.ORM.Repository.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,8 @@ public class BotRest {
     public ResponseEntity<Object> logs() {
         RestResponse resp = new RestResponse();
         resp.setMessage("LOGS");
-        resp.setData(this.logRepository.findAllByOrderByObjectIdDesc());
+        Pageable topTen = new PageRequest(0, 500);
+        resp.setData(this.logRepository.findAllByOrderByObjectIdDesc(topTen));
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
     @RequestMapping(value = "/queue", method = RequestMethod.GET)

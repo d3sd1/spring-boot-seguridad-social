@@ -34,6 +34,7 @@ public class RestResponse {
         DATE_PASSED,
         CONTRACT_ACCOUNT_NOT_FOUND,
         NOT_FOUND,
-        INVALID_DATE
+        INVALID_DATE,
+        INVALID_NAF
     }
 }

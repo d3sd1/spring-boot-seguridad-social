@@ -128,6 +128,13 @@ public class BajaRest {
         }*/
 
 
+        /* Verificar naf */
+        if(baja.getNaf() == null || baja.getNaf().equals("") || baja.getNaf().length() < 10) {
+            resp.setMessage(RestResponse.Message.INVALID_NAF);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+
+
         Baja queueBaja = this.queueService.isBajaOnQueue(baja);
         if (queueBaja != null) {
             resp.setMessage(RestResponse.Message.RETRIEVED);

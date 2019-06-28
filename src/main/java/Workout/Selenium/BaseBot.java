@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.zeroturnaround.zip.commons.FileUtils;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -92,7 +93,9 @@ public abstract class BaseBot {
             driver.manage().window().setSize(new Dimension(1024, 768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
-            this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
+            if (!e.getMessage().contains("java.net.ConnectException")) {
+                this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
+            }
             return false;
         }
         return true;
@@ -313,15 +316,16 @@ public abstract class BaseBot {
         String s;
         Process p;
         try {
-            p = Runtime.getRuntime().exec("pkill -9 firefox");
+            p = Runtime.getRuntime().exec("/var/www/killfirefox.sh");
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null)
                 System.out.println("line: " + s);
             p.waitFor();
-            System.out.println ("exit: " + p.exitValue());
+            System.out.println("exit: " + p.exitValue());
             p.destroy();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     abstract void initialNavigate();

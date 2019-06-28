@@ -135,6 +135,12 @@ public class AltaRest {
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
 
+        /* Verificar naf */
+        if(alta.getNaf() == null || alta.getNaf().equals("") || alta.getNaf().length() < 10) {
+            resp.setMessage(RestResponse.Message.INVALID_NAF);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+
         Alta queueAlta = this.queueService.isAltaOnQueue(alta);
         if (queueAlta != null) {
             resp.setMessage(RestResponse.Message.RETRIEVED);
