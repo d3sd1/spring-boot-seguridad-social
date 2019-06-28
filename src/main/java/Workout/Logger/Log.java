@@ -16,7 +16,7 @@ public class Log implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private long objectId;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false, unique = false, length = 100000)
     private String text;
 
     @Column(nullable = false, unique = false)

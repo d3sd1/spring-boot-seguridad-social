@@ -38,4 +38,4 @@ INSERT INTO contract_key (ckey,TYPE_id,time_type_id,description) VALUES
                             (540,3,2,"JUBILADO PARCIAL"),
                             (541,3,2,"RELEVO"),
                             (550,3,2,"FOMENTO CONTRATACIÓN INDEFINIDA"),
-                            (552,3,2,"EMPRESAS DE INSERCIÓN")
+                            (552,3,2,"EMPRESAS DE INSERCIÓN");
