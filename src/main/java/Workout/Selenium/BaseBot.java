@@ -88,8 +88,8 @@ public abstract class BaseBot {
         opts.setHeadless(!this.isDev);
         try {
             this.driver = new FirefoxDriver(opts);
-            driver.manage().window().setPosition(new Point(0,0));
-            driver.manage().window().setSize(new Dimension(1024,768));
+            driver.manage().window().setPosition(new Point(0, 0));
+            driver.manage().window().setSize(new Dimension(1024, 768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
@@ -105,7 +105,7 @@ public abstract class BaseBot {
 
     protected void destroy() {
         if (this.driver != null) {
-            this.driver.close();
+            this.endSession();
             //this.driver.quit(); remove due to queue rflection error
         }
         if (this.op != null) {
@@ -178,9 +178,8 @@ public abstract class BaseBot {
             params.put("result", this.op.getStatus().getStatus());
             params.put("resultmessage", this.op.getErrMsg());
 
-            String finalCallback = plainUrl + (plainUrl.indexOf("?") == -1 ? "?":"&") +
+            String finalCallback = plainUrl + (plainUrl.indexOf("?") == -1 ? "?" : "&") +
                     "response=" + Base64.getEncoder().encodeToString(gson.toJson(params).getBytes());
-
 
 
             URL con = new URL(finalCallback);
@@ -195,7 +194,7 @@ public abstract class BaseBot {
             in.close();
 
             this.logger.info("Ejecutado callback satisfactoriamente:" +
-                    + this.op.getId() + " del tipo " + this.op.getClass().getSimpleName() + " -> " + finalCallback);
+                    +this.op.getId() + " del tipo " + this.op.getClass().getSimpleName() + " -> " + finalCallback);
         } catch (IOException e) {
             this.logger.info("Ha ocurrido un error al ejecutar el callback de la operación con ID "
                     + this.op.getId() + " del tipo " + this.op.getClass().getSimpleName());
@@ -219,7 +218,7 @@ public abstract class BaseBot {
             this.waitPageLoad();
         } catch (Exception e) {
             logger.error("La página de la seguridad social está offline (detectado antes de empezar la operación).");
-            this.driver.close();
+            this.endSession();
             this.op.setErrMsg("Seguridad social caída. Petición abortada.");
             this.updateOpStatus("ERROR");
         }
@@ -306,6 +305,23 @@ public abstract class BaseBot {
                 };
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(pageLoadCondition);
+    }
+
+    private void endSession() {
+        this.driver.close();
+        this.driver.quit();
+        String s;
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec("pkill -9 firefox");
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null)
+                System.out.println("line: " + s);
+            p.waitFor();
+            System.out.println ("exit: " + p.exitValue());
+            p.destroy();
+        } catch (Exception e) {}
     }
 
     abstract void initialNavigate();
