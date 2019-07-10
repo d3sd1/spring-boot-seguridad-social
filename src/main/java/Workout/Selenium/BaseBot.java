@@ -93,7 +93,7 @@ public abstract class BaseBot {
             driver.manage().window().setSize(new Dimension(1024, 768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
-            if (!e.getMessage().contains("java.net.ConnectException")) {
+            if (!e.getMessage().contains("java.net.ConnectException") && !e.getMessage().contains("Socket timeout reading Marionette")) {
                 this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
             }
             return false;

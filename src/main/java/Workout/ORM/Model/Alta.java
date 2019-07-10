@@ -14,6 +14,8 @@ public class Alta extends Operation {
     @OneToOne
     private ContractAccount cca;
 
+    // este es un nuevo cambio
+
     @Column(nullable = false, unique = false)
     private String naf;
 
