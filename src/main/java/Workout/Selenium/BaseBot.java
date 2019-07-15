@@ -93,7 +93,8 @@ public abstract class BaseBot {
             driver.manage().window().setSize(new Dimension(1024, 768));
             this.driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         } catch (Exception e) {
-            if (!e.getMessage().contains("java.net.ConnectException") && !e.getMessage().contains("Socket timeout reading Marionette")) {
+            if (!e.getMessage().contains("java.net.ConnectException")
+                    && !e.getMessage().contains("Socket timeout reading Marionette") && !e.getMessage().contains("Socket timeout reading Marionette")) {
                 this.logger.error("Firefox not installed. Please install it before using bot: Except: " + e.getMessage());
             }
             return false;
@@ -110,12 +111,6 @@ public abstract class BaseBot {
         if (this.driver != null) {
             this.endSession();
             //this.driver.quit(); remove due to queue rflection error
-        }
-        if (this.op != null) {
-            this.op.setProcessTime(
-                    (int) this.op.getDateProcessed().until(LocalDateTime.now(), ChronoUnit.SECONDS)
-            );
-            this.queueService.saveOp(op);
         }
         this.op = null;
     }
@@ -144,7 +139,12 @@ public abstract class BaseBot {
             // Nothing since it's not rly an exception (about SS down), already logged.
             return;
         } catch (Exception e) {
-            this.logger.error("Ha ocurrido un error al procesar la operación: " + e.getMessage());
+            if(e.getMessage().contains("Unable to locate element: *[name='txt_SDFPROAFI']")) {
+                this.logger.error("Error de escalamiento del servidor. Pueden producirse caducados. El servidor necesita más recursos.");
+            }
+            else {
+                this.logger.error("Ha ocurrido un error al procesar la operación: " + e.getMessage());
+            }
             return;
         }
 
@@ -153,7 +153,10 @@ public abstract class BaseBot {
         } else {
             this.updateOpStatus("ERROR");
         }
-        this.op.setProcessTime((int) (this.op.getDateProcessed().until(LocalDateTime.now(), ChronoUnit.SECONDS)));
+        this.op.setProcessTime(
+                (int) this.op.getDateProcessed().until(LocalDateTime.now(), ChronoUnit.SECONDS)
+        );
+        this.queueService.saveOp(op);
         this.executeCallback();
         this.removeOpFromQueue();
     }
@@ -229,13 +232,14 @@ public abstract class BaseBot {
 
 
     protected void takeScreenshoot() {
+        /* disabled
         try {
             File scrFile = ((TakesScreenshot) this.driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(scrFile, new File(this.screenshootPath + File.separator +
                     this.op.getClass().getSimpleName() + File.separator + this.op.getId() + File.separator + System.currentTimeMillis() + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private boolean isFalsePositiveError(String webMessageText) {
@@ -279,7 +283,8 @@ public abstract class BaseBot {
             this.updateOpStatus("ERROR");
             this.removeOpFromQueue();
             this.queueService.saveOp(this.op);
-            this.logger.warning("Error en operación " + this.op.getClass().getSimpleName() + " con ID " + this.op.getId() + ": " + errorBox.getText());
+            // Don't log this error
+            //this.logger.warning("Error en operación " + this.op.getClass().getSimpleName() + " con ID " + this.op.getId() + ": " + errorBox.getText());
             return true;
         }
         return false;
